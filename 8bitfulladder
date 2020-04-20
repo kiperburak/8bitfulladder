@@ -1,0 +1,39 @@
+--390626 Burak Kiper 
+
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity FULLADD is
+port ( 
+    X: in std_logic_vector (7 downto 0);
+    Y: in std_logic_vector (7 downto 0);
+    Sum: out std_logic_vector (7 downto 0);
+    Cout: out std_logic
+);
+end FULLADD;
+
+architecture BEHAVIOR of FULLADD is
+begin
+    process (X, Y) is
+    variable tempX : std_logic_vector(7 downto 0);
+    variable tempY : std_logic_vector(7 downto 0);
+    variable tempSum : std_logic_vector(7 downto 0);
+    variable tempCout: std_logic;
+    variable Cin : std_logic;
+
+begin
+    tempX := X;
+    tempY := Y;
+    Cin := '0';
+
+for i in 7 downto 0 loop
+    tempSum(i) := tempX(i) xor tempY(i) xor Cin;
+    tempCout := (tempX(i) and tempY(i)) or (tempX(i) and Cin) or (tempY(i) and Cin);
+    Cin := tempCout;
+end loop;
+
+Sum <= tempSum;
+Cout <= tempCout;
+end process;
+end BEHAVIOR;
